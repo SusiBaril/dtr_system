@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
   root "home#index"
-  
-  #Admin Routes
+
+  # Admin Routes
   namespace :admin do
     get "attendances/index"
     get "attendances/show"
     get "dashboard/index"
   end
 
-  #User Routes
+  # User Routes
   namespace :user do
     get "tasks/index"
     get "attendances/index"
