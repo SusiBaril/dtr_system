@@ -1,0 +1,78 @@
+<div>
+    <h1 class="text-4xl font-bold text-center mt-10">Welcome to the Attendance and Task Management System</h1>
+    <p class="text-center mt-4 text-lg">Manage your attendance and tasks efficiently with our user-friendly interface.</p>
+</div>
+
+<%# Analytics for Attendance Status, Working Hour and Remaining Hours %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+
+    <!-- Time In -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 border-l-8 border-green-500">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm">Attendance Status</p>
+                <h1 class="text-3xl font-bold text-gray-800">Logged In</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Out -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 border-l-8 border-red-500">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm">Today's Working Hours</p>
+                <h1 class="text-3xl font-bold text-gray-800">6 hrs 32 mins</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining Hours -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 border-l-8 border-blue-500">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-gray-500 text-sm">Remaining Hours</p>
+                <h1 class="text-3xl font-bold text-gray-800">120 hrs</h1>
+                <p class="text-blue-500 text-sm mt-1">Target: 486 hrs</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<%# Button for Time In and Time Out %>
+<div class="flex justify-center items-center mt-16">
+
+    <div>
+        
+    </div>
+    
+    <button
+        id="attendanceButton"
+        onclick="toggleAttendance()"
+        class="bg-green-500 hover:bg-green-600 text-white text-4xl font-bold py-10 px-20 rounded-full shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer">
+        Time In
+    </button>
+
+</div>
+
+
+<%# Script for the Button Toggle %>
+<script>
+    let timedIn = false;
+
+    function toggleAttendance() {
+        const button = document.getElementById("attendanceButton");
+
+        if (!timedIn) {
+            button.innerText = "Time Out";
+            button.classList.remove("bg-green-500", "hover:bg-green-600");
+            button.classList.add("bg-red-500", "hover:bg-red-600");
+            timedIn = true;
+        } else {
+            button.innerText = "Time In";
+            button.classList.remove("bg-red-500", "hover:bg-red-600");
+            button.classList.add("bg-green-500", "hover:bg-green-600");
+            timedIn = false;
+        }
+    }
+</script>
