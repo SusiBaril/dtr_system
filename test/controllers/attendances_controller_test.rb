@@ -20,7 +20,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       post attendances_url, params: { attendance: { rendered_hours: @attendance.rendered_hours, time_in: @attendance.time_in, time_out: @attendance.time_out } }
     end
 
-    assert_redirected_to attendance_url(Attendance.last)
+    assert_redirected_to attendance_url(@attendance)
   end
 
   test "should show attendance" do

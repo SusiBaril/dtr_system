@@ -49,12 +49,9 @@ class AttendancesController < ApplicationController
 
   # DELETE /attendances/1 or /attendances/1.json
   def destroy
-    @attendance.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to attendances_path, notice: "Attendance was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    @attendance.tasks.destroy_all
+    @attendance.destroy
+    redirect_to attendances_url, notice: "Attendance deleted."
   end
 
   private
