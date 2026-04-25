@@ -20,7 +20,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
       post attendances_url, params: { attendance: { rendered_hours: @attendance.rendered_hours, time_in: @attendance.time_in, time_out: @attendance.time_out } }
     end
 
-    assert_redirected_to attendance_url(@attendance)
+    assert_redirected_to attendance_url(Attendance.last)
   end
 
   test "should show attendance" do
@@ -35,7 +35,7 @@ class AttendancesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update attendance" do
     patch attendance_url(@attendance), params: { attendance: { rendered_hours: @attendance.rendered_hours, time_in: @attendance.time_in, time_out: @attendance.time_out } }
-    assert_redirected_to attendance_url(@attendance)
+    assert_redirected_to attendance_url(@attendance.reload)
   end
 
   test "should destroy attendance" do
