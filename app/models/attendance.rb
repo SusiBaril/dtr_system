@@ -5,6 +5,7 @@ class Attendance < ApplicationRecord
   has_many :tasks, dependent: :destroy
 
   def slug_label
+    return "dtr-unknown" if time_in.blank?
     time_in.strftime("dtr-%Y-%m-%d")
   end
 end
