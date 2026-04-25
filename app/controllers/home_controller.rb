@@ -14,7 +14,7 @@ class HomeController < ApplicationController
   def time_out
     attendance = Attendance.where(date: Date.today, time_out: nil).last
     if attendance
-      time_out_now = Time.current.in_time_zone('Asia/Manila')
+      time_out_now = Time.current.in_time_zone("Asia/Manila")
       attendance.update(time_out: time_out_now)
       elapsed_seconds = (time_out_now - attendance.time_in.in_time_zone("Asia/Manila")).to_i
       rendered_hours = elapsed_seconds / 3600.0
