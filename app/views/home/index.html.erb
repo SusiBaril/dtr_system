@@ -11,7 +11,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-gray-500 text-sm">Attendance Status</p>
-                <h1 class="text-3xl font-bold text-gray-800">Logged In</h1>
+                <h1 class="text-3xl font-bold text-gray-800" id="log">Logged Out</h1>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-gray-500 text-sm">Today's Working Hours</p>
-                <h1 class="text-3xl font-bold text-gray-800">6 hrs 32 mins</h1>
+                <h1 id="timer" class="text-3xl font-bold text-gray-800">00:00:00</h1>
             </div>
         </div>
     </div>
@@ -39,57 +39,95 @@
 
 </div>
 
-<%# Button for Time In and Time Out %>
 <div class="flex justify-center items-center mt-16">
-
-    <div>
-        
-    </div>
-    
-    <button
-        id="attendanceButton"
-        onclick="toggleAttendance()"
-        class="bg-green-500 hover:bg-green-600 text-white text-4xl font-bold py-10 px-20 rounded-full shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer">
-        Time In
-    </button>
-
+  <% if @timed_in %>
+    <%= form_with url: time_out_path, method: :post, local: true, data: { turbo: false } do |f| %>
+      <%= f.submit "Time Out",
+        class: "bg-red-500 hover:bg-red-600 text-white text-4xl font-bold py-10 px-20 rounded-full shadow-2xl" %>
+    <% end %>
+  <% else %>
+    <%= form_with url: time_in_path, method: :post, local: true, data: { turbo: false } do |f| %>
+      <%= f.submit "Time In",
+        class: "bg-green-500 hover:bg-green-600 text-white text-4xl font-bold py-10 px-20 rounded-full shadow-2xl" %>
+    <% end %>
+  <% end %>
 </div>
 
+<script>
+  const startTime = <%= @start_time_ms || 'null' %>;
+  const timedIn = <%= @timed_in ? 'true' : 'false' %>;
+</script>
+
 <div>
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Time In</th>
-            <th>Time Out</th>
-            <th>Rendered Hour</th>
+    <div class="text-center uppercase text-2xl">
+        <h2 class="text-2xl font-bold mt-10">Attendance History</h2>
+    </div>
+    <table class="border border-black w-full mt-10">
+        <tr class="border border-black">
+            <th class="p-3 text-lg">Date</th>
+            <th class="p-3 text-lg">Time In</th>
+            <th class="p-3 text-lg">Time Out</th>
+            <th class="p-3 text-lg">Rendered Hour</th>
         </tr>
-        <tr>
-            <td>2024-06-01</td>
-            <td>08:00 AM</td>
-            <td>04:30 PM</td>
-            <td>8 hrs 30 mins</td>
-        </tr>
+
+        <% if @attendances.empty? %>
+            <tr class="border border-black">
+                <td colspan="4" class="p-3 text-center text-gray-500">No attendance records found.</td>
+            </tr>
+        <% else %>
+            <% @attendances&.each do |attendance| %>  <!-- Use & to check for nil -->
+                <tr class="border border-black text-center">
+                    <td class="p-3"><%= attendance.date.strftime('%Y-%m-%d') %></td>
+                    <td class="p-3"><%= attendance.time_in&.in_time_zone('Asia/Manila')&.strftime('%I:%M %p') || 'N/A' %></td>
+                    <td class="p-3"><%= attendance.time_out&.in_time_zone('Asia/Manila')&.strftime('%I:%M %p') || 'N/A' %></td>
+                    <td class="p-3"><%= attendance.rendered_hours&.round(2) || 'N/A' %> hrs</td>
+                </tr>
+            <% end %>
+        <% end %>
+        
     </table>
 </div>
 
 
-<%# Script for the Button Toggle %>
+<%# Script for the Button Toggle, Time Counter and Logged In and Logged Out %>
 <script>
-    let timedIn = false;
+document.addEventListener("DOMContentLoaded", () => {
+    const timerDisplay = document.getElementById("timer");
+    const log = document.getElementById("log");
 
-    function toggleAttendance() {
-        const button = document.getElementById("attendanceButton");
+    let interval;
+    let startTime = <%= @start_time_ms || 'null' %>;
+    let timedIn = <%= @timed_in ? 'true' : 'false' %>;
 
-        if (!timedIn) {
-            button.innerText = "Time Out";
-            button.classList.remove("bg-green-500", "hover:bg-green-600");
-            button.classList.add("bg-red-500", "hover:bg-red-600");
-            timedIn = true;
-        } else {
-            button.innerText = "Time In";
-            button.classList.remove("bg-red-500", "hover:bg-red-600");
-            button.classList.add("bg-green-500", "hover:bg-green-600");
-            timedIn = false;
+    function format(ms) {
+        const hours = String(Math.floor(ms / 3600000)).padStart(2, "0");
+        const minutes = String(Math.floor((ms % 3600000) / 60000)).padStart(2, "0");
+        const seconds = String(Math.floor((ms % 60000) / 1000)).padStart(2, "0");
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    function tick() {
+        if (startTime) {
+            const elapsed = Date.now() - startTime;
+            timerDisplay.textContent = format(elapsed);
         }
     }
+
+    function start() {
+        clearInterval(interval);
+        interval = setInterval(tick, 1000);
+        tick();
+    }
+
+    function init() {
+        log.textContent = timedIn ? "Logged In" : "Logged Out";
+        if (timedIn && startTime) {
+            start();
+        } else {
+            timerDisplay.textContent = "00:00:00";
+        }
+    }
+
+    init();
+});
 </script>

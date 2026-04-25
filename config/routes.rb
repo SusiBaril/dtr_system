@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root "home#index"
 
+  post "/time_in", to: "home#time_in", as: :time_in
+  post "/time_out", to: "home#time_out", as: :time_out
+
   # Admin Routes
   namespace :admin do
     get "attendances/index"
