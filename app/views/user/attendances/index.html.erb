@@ -1,2 +1,32 @@
-<h1>User::Attendances#index</h1>
-<p>Find me in app/views/user/attendances/index.html.erb</p>
+<div class="flex items-center justify-center">
+    <h1 class="text-5xl uppercase font-bold">Attendance Record</h1>
+</div>
+
+<div class="flex justify-end items-end mt-5">
+    <input type="submit" value="Export to Excel" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-5 cursor-pointer drop-shadow-lg">
+</div>
+
+<div class="flex justify-center items-center">
+    <table class="border border-black w-full mt-10">
+        <tr class="border border-black">
+            <th class="p-3 text-lg">Date</th>
+            <th class="p-3 text-lg">Time In</th>
+            <th class="p-3 text-lg">Time Out</th>
+            <th class="p-3 text-lg">Rendered Hour</th>
+        </tr>
+        <% if @attendances&.empty? %>
+            <tr>
+                <td class="p-3 text-center" colspan="4">No attendance records found.</td>
+            </tr>
+        <% else %>
+            <% @attendances&.each do |attendance|%>
+                <tr class="border border-black">
+                    <td class="p-3 text-center"><%= attendance.created_at.strftime("%B %d, %Y") %></td>
+                    <td class="p-3 text-center"><%= attendance.time_in.strftime("%I:%M %p") %></td>
+                    <td class="p-3 text-center"><%= attendance.time_out ? attendance.time_out.strftime("%I:%M %p") : "N/A" %></td>
+                    <td class="p-3 text-center"><%= attendance.rendered_hours ? "#{attendance.rendered_hours.round(2)} hrs" : "N/A" %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+</div>
