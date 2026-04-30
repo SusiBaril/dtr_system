@@ -17,6 +17,7 @@ module DtrSystem
     config.autoload_lib(ignore: %w[assets tasks])
 
     config.time_zone = "Asia/Manila"
+    config.active_record.default_timezone = :local
 
     # Configuration for the application, engines, and railties goes here.
     #

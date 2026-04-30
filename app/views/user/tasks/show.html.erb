@@ -1,0 +1,4 @@
+<h1>Task Details</h1>
+<p><strong>Name:</strong> <%= @task.name %></p>
+<p><strong>Date:</strong> <%= @task.date&.strftime('%Y-%m-%d') %></p>
+<%= link_to 'Back to Tasks', user_tasks_path %>

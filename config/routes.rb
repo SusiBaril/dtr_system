@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   namespace :user do
     get "tasks/index"
     get "attendances/index"
+
+    resources :tasks
   end
   get "home/index"
   resources :tasks

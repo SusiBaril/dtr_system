@@ -1,9 +1,9 @@
 class HomeController < ApplicationController
   def index
-    @last_attendance = Attendance.where(date: Date.today, time_out: nil).last
+    @last_attendance = Attendance.where(date: Date.current, time_out: nil).last
     @timed_in = @last_attendance.present?
     @start_time_ms = @last_attendance&.time_in&.to_i * 1000 if @timed_in
-    @attendances = Attendance.where(date: Date.today).order(created_at: :desc).limit(5)
+    @attendances = Attendance.where(date: Date.current).order(created_at: :desc).limit(5)
     @remaining_hours = 0 + Attendance.where(date: Date.current.beginning_of_month..Date.current.end_of_month).sum(:rendered_hours).to_f
     if @timed_in
       elapsed_hours = (Time.current - @last_attendance.time_in) / 3600.0
@@ -12,12 +12,12 @@ class HomeController < ApplicationController
   end
 
   def time_in
-    Attendance.create(date: Date.today, time_in: Time.current.in_time_zone("Asia/Manila"))
+    Attendance.create(date: Date.current, time_in: Time.current.in_time_zone("Asia/Manila"))
     redirect_to root_path
   end
 
   def time_out
-    attendance = Attendance.where(date: Date.today, time_out: nil).last
+    attendance = Attendance.where(date: Date.current, time_out: nil).last
     if attendance
       time_out_now = Time.current.in_time_zone("Asia/Manila")
       attendance.update(time_out: time_out_now)
@@ -29,7 +29,7 @@ class HomeController < ApplicationController
   end
 
   def rendered_hours
-    attendance = Attendance.where(date: Date.today).last
+    attendance = Attendance.where(date: Date.current).last
     if attendance && attendance.rendered_hours
       render json: { rendered_hours: attendance.rendered_hours }
     else

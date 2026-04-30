@@ -74,9 +74,9 @@
                 <td colspan="4" class="p-3 text-center text-gray-500">No attendance records found.</td>
             </tr>
         <% else %>
-            <% @attendances&.each do |attendance| %>  <!-- Use & to check for nil -->
+            <% @attendances.each do |attendance| %>
                 <tr class="border border-black text-center">
-                    <td class="p-3"><%= attendance.date.strftime('%Y-%m-%d') %></td>
+                    <td class="p-3"><%= attendance.date&.strftime('%Y-%m-%d') || 'N/A' %></td>
                     <td class="p-3"><%= attendance.time_in&.in_time_zone('Asia/Manila')&.strftime('%I:%M %p') || 'N/A' %></td>
                     <td class="p-3"><%= attendance.time_out&.in_time_zone('Asia/Manila')&.strftime('%I:%M %p') || 'N/A' %></td>
                     <td class="p-3"><%= attendance.rendered_hours&.round(2) || 'N/A' %> hrs</td>
