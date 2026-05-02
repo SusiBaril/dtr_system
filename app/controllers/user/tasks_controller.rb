@@ -12,8 +12,6 @@ class User::TasksController < ApplicationController
   end
 
   def create
-    Rails.logger.debug "TASK CREATE CALLED"
-
     attendance = Attendance.find_by(date: Date.current)
 
     unless attendance
@@ -25,10 +23,9 @@ class User::TasksController < ApplicationController
     @task.attendance = attendance
 
     if @task.save
-      redirect_to user_tasks_path, notice: "Task created"
+      redirect_to user_task_path(@task)
     else
-      Rails.logger.debug @task.errors.full_messages
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -40,9 +37,9 @@ class User::TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     if @task.update(task_params)
-      redirect_to user_tasks_path
+      redirect_to user_task_path(@task)
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -50,7 +47,7 @@ class User::TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.destroy
 
-    redirect_to user_tasks_path
+    redirect_to user_tasks_path, notice: "Task deleted successfully"
   end
 
   private

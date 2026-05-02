@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get "attendances/index"
 
     resources :tasks
+    resources :attendances
   end
 
   get "home/index"

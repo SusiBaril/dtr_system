@@ -1,8 +1,12 @@
 require "test_helper"
 
-class User::AttendancesControllerTest < ActionDispatch::IntegrationTest
+class AttendancesControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @attendance = attendances(:one)
+  end
+
   test "should get index" do
-    get user_attendances_index_url
+    get user_attendances_path
     assert_response :success
   end
 end
