@@ -1,6 +1,6 @@
 # DTR System (Daily Time Record + Task Journal)
 
-A Ruby on Rails-based attendance and task tracking system that automatically generates daily task records when a user times out. Designed for interns and employees to log attendance and reflect daily work through editable task journals.
+A Ruby on Rails-based attendance and task tracking system that automatically generates daily task records when a user times out. Designed for interns to log attendance and reflect daily work through editable task journals.
 
 ---
 
