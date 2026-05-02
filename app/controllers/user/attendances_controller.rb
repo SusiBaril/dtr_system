@@ -3,7 +3,7 @@ class User::AttendancesController < ApplicationController
     @last_attendance = Attendance.where(date: Date.today, time_out: nil).last
     @timed_in = @last_attendance.present?
     @start_time_ms = @last_attendance&.time_in&.to_i * 1000 if @timed_in
-    @attendances = Attendance.where(date: Date.today).order(created_at: :desc)
+    @attendances = Attendance.order(created_at: :desc)
   end
 
   def time_in

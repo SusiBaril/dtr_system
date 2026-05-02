@@ -42,12 +42,12 @@
   <% if @timed_in %>
     <%= form_with url: time_out_path, method: :post, local: true, data: { turbo: false } do |f| %>
       <%= f.submit "Time Out",
-        class: "bg-red-500 hover:bg-red-600 text-white text-4xl font-bold py-10 px-20 rounded-full shadow-2xl" %>
+        class: "bg-red-500 hover:bg-red-600 text-white text-4xl font-bold py-5 px-15 rounded-full shadow-2xl" %>
     <% end %>
   <% else %>
     <%= form_with url: time_in_path, method: :post, local: true, data: { turbo: false } do |f| %>
       <%= f.submit "Time In",
-        class: "bg-green-500 hover:bg-green-600 text-white text-4xl font-bold py-10 px-20 rounded-full shadow-2xl" %>
+        class: "bg-green-500 hover:bg-green-600 text-white text-4xl font-bold py-5 px-15 rounded-full shadow-2xl" %>
     <% end %>
   <% end %>
 </div>
