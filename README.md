@@ -26,25 +26,10 @@ A Ruby on Rails-based attendance and task tracking system that automatically gen
 ## Tech Stack
 
 - Ruby on Rails 8
-- SQLite / PostgreSQL (depending on setup)
+- PostgreSQL
 - TailwindCSS
 - ERB Views
 - Minitest (default Rails testing)
-
----
-
-## Core Models
-
-### Attendance
-- `time_in`
-- `time_out`
-- `rendered_hours`
-- `date`
-
-### Task
-- `title`
-- `description`
-- `belongs_to :attendance`
 
 ---
 
@@ -62,5 +47,3 @@ A Ruby on Rails-based attendance and task tracking system that automatically gen
 
 4. User edits the Task
    - Adds daily journal / notes / work summary
-
----
